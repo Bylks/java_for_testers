@@ -9,34 +9,38 @@ public class TriangleTests {
     //Но тесты проходят успешно
     // При запуске gradlew.bat с --warning-mode all пишет The automatic loading of test framework implementation dependencies has been deprecated. This is scheduled to be removed in Gradle 9.0. Declare the desired test framework directly on the test suite or explicitly declare the test framework implementation dependencies on the test's runtime classpath.
     //Подскажете в чем может быть причина ?
+    Triangle trtest1 = new Triangle(3.0,4.0,5.0);
+    Triangle trtest2 = new Triangle(6.0,8.0,10.0);
+    Triangle trtest3 = new Triangle(10.0,12.0,15.0);
+
     @Test
     void canCalculateTriangleAreaTest1()
-        {
-        Triangle trtest = new Triangle(3.0,4.0,5.0);
-        Assertions.assertEquals(6,trtest.calculateTriangeArea());
+    {
+        Assertions.assertEquals(6,trtest1.calculateTriangeArea());
     }
     @Test
     void canCalculateTriangleAreaTest2()
     {
-        Triangle trtest = new Triangle(6.0,8.0,10.0);
-        Assertions.assertEquals(24,trtest.calculateTriangeArea());
+        Assertions.assertEquals(24,trtest2.calculateTriangeArea());
     }
     @Test
     void canCalculateTriangleAreaTest3()
     {
-        Triangle trtest = new Triangle(10.0,12.0,15.0);
-        Assertions.assertEquals(59.81168364124187,trtest.calculateTriangeArea());
+        Assertions.assertEquals(59.81168364124187,trtest3.calculateTriangeArea());
     }
     @Test
     void canCalculateTrianglePerimeterTest1()
     {
-        Triangle trtest = new Triangle(3.0,4.0,5.0);
-        Assertions.assertEquals(12,trtest.calculateTriangePerimeter());
+        Assertions.assertEquals(12,trtest1.calculateTriangePerimeter());
     }
     @Test
     void canCalculateTrianglePerimeterTest2()
     {
-        Triangle trtest = new Triangle(6.0,8.0,10.0);
-        Assertions.assertEquals(24,trtest.calculateTriangePerimeter());
+        Assertions.assertEquals(24,trtest2.calculateTriangePerimeter());
+    }
+    @Test
+    void canCalculateTrianglePerimeterTest3()
+    {
+        Assertions.assertEquals(24,trtest3.calculateTriangePerimeter());
     }
 }
