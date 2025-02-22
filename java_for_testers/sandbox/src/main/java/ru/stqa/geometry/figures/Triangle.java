@@ -1,10 +1,29 @@
 package ru.stqa.geometry.figures;
+
 public class Triangle {
+double a,b,c;
+    public void printTriangleArea() {
+        double area = calculateTriangeArea();
+        var text = String.format ("Площадь треугольника со сторонами %.2f , %.2f, %.2f равна %.2f",a,b,c,area);
+        System.out.println(text);
+    }
+    public double calculateTriangeArea()
+    {
+        double p = (a+b+c)/2;
+        double area = Math.sqrt(p*(p-a)*(p-b)*(p-c)); //Считаем площадь
+        return area;
+    }
+   public Triangle (double a1,double b1, double c1){
+        a=a1;//Задаём поля в конструкторе
+        b=b1;
+        c=c1;
 
-    public static void printTriangleArea(double a, double b, double c) {
-        double p= (a+b+c)/2; // sqrt(p*(p-a)*(p-b)*(p-c))
-        double area = Math.sqrt(p*(p-a)*(p-b)*(p-c));
-        System.out.println(String.format ("Площадь треугольника со сторонами %f , %f, %f равна %f",a,b,c,area));
+    }
+    public double calculateTriangePerimeter() {
+        return (a+b+c);//Считаем периметр
+    }
 
+    public void printTrianglePerimeter() {
+        System.out.println(String.format("Периметр треугольника со сторонами %.2f , %.2f, %.2f равна %.2f",a,b,c,calculateTriangePerimeter()));
     }
 }
