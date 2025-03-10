@@ -1,7 +1,8 @@
 package manager;
 import model.ContactData;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+
+import java.util.Objects;
 
 public class ContactHelper extends HelperBase {
     public ContactHelper(ApplicationManager manager) {
@@ -40,22 +41,14 @@ public class ContactHelper extends HelperBase {
 
     private void fillContactValues(ContactData contactData) {
        //String lastName,String firstName, String address, String email1, String homePhone, String group
-        type(By.name("firstname"),contactData.firstName());
-        type(By.name("lastname"),contactData.lastName());
-        type(By.name("address"),contactData.address());
-        type(By.name("email"),contactData.email1());
-        type(By.name("home"),contactData.homePhone());
-        if (!(contactData.group().isEmpty()))
-        {
-            selectOption("new_group",contactData.group());
-        }
-        //tut poprobovat group v base helper dobavit rabotu s vipadaushim spiskom na vhod stroka ?
-    }
-
-    private void selectOption(String select, String option) {
-        click(By.name(select));
-        WebElement dropdown = manager.driver.findElement(By.name(select));
-        dropdown.findElement(By.xpath("//option[. = '"+option+"']")).click();
+       if (!contactData.firstName().isEmpty()) {type(By.name("firstname"),contactData.firstName());}
+       if (!contactData.lastName().isEmpty()) {type(By.name("lastname"),contactData.lastName());}
+       if (!contactData.address().isEmpty()) {type(By.name("address"),contactData.address());}
+       if (!contactData.email1().isEmpty()) { type(By.name("email"),contactData.email1());}
+       if (!contactData.homePhone().isEmpty()) { type(By.name("home"),contactData.homePhone());}
+        if (Objects.nonNull(contactData.birthday())) { fillDate(By.name("bday"),By.name("bmonth"),By.name("byear"),contactData.birthday());}
+        if (Objects.nonNull(contactData.anniversary())) { fillDate(By.name("aday"),By.name("amonth"),By.name("ayear"),contactData.anniversary());}
+           if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
     }
 
     private void openAddContactPage() {
