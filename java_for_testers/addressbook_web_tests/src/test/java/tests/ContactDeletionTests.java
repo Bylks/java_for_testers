@@ -14,4 +14,8 @@ public class ContactDeletionTests extends TestBase {
         app.contacts().deleteAnyContact();
         app.contacts().openContactPage();
     }
+
+
+
+
 }

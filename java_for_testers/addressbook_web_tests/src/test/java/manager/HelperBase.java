@@ -39,4 +39,8 @@ public class HelperBase {
       //  WebElement dropdown = manager.driver.findElement(select);
       // dropdown.findElement(By.xpath("//option[. = '"+option+"']")).click(); почемуто не работает
     }
+
+    protected void goHomePage() {
+        click(By.linkText("home page"));
+    }
 }

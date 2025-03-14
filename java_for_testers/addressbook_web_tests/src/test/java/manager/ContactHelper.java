@@ -28,11 +28,7 @@ public class ContactHelper extends HelperBase {
         openAddContactPage();
         fillContactValues(contactData);
         submitNewContact();
-        goHomePage();
-    }
-
-    private void goHomePage() {
-        click(By.linkText("home page"));
+        openContactPage();
     }
 
     private void submitNewContact() {
@@ -46,9 +42,9 @@ public class ContactHelper extends HelperBase {
        if (!contactData.address().isEmpty()) {type(By.name("address"),contactData.address());}
        if (!contactData.email1().isEmpty()) { type(By.name("email"),contactData.email1());}
        if (!contactData.homePhone().isEmpty()) { type(By.name("home"),contactData.homePhone());}
-        if (Objects.nonNull(contactData.birthday())) { fillDate(By.name("bday"),By.name("bmonth"),By.name("byear"),contactData.birthday());}
-        if (Objects.nonNull(contactData.anniversary())) { fillDate(By.name("aday"),By.name("amonth"),By.name("ayear"),contactData.anniversary());}
-           if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
+       if (Objects.nonNull(contactData.birthday())) { fillDate(By.name("bday"),By.name("bmonth"),By.name("byear"),contactData.birthday());}
+       if (Objects.nonNull(contactData.anniversary())) { fillDate(By.name("aday"),By.name("amonth"),By.name("ayear"),contactData.anniversary());}
+       if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
     }
 
     private void openAddContactPage() {
@@ -58,4 +54,8 @@ public class ContactHelper extends HelperBase {
         }
     }
 
+    public int getCount() {
+        openContactPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
 }
