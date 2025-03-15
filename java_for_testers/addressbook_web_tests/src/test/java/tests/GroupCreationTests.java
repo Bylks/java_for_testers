@@ -28,12 +28,12 @@ public class GroupCreationTests extends TestBase {
                 }
             }
         }
-//        for (int i = 0;i<5;i++)
-//        {
-//            result.add(new GroupData().withChangedName(randomString(i*10))
-//                    .withChangedHeader(randomString(i*10))
-//                    .withChangedFooter(randomString(i*10)));
-//        }
+       for (int i = 0;i<5;i++)
+       {
+           result.add(new GroupData().withChangedName(randomString(i*10))
+                   .withChangedHeader(randomString(i*10))
+                  .withChangedFooter(randomString(i*10)));
+       }
       //  result.add(new GroupData());
       //  result.add(new GroupData().withChangedName("qwe"));
         return result;
@@ -43,12 +43,12 @@ public class GroupCreationTests extends TestBase {
     public void canCreateMultipleGroup(GroupData group) {
         var oldGroups = app.groups().getList();
         app.groups().createGroup(group);
-        var newGroups = app.groups().getList();
+         var newGroups = app.groups().getList(); // в некоторых случаях в newGroups элементы получаются не отсортированы, из за этого newGroups.get(newGroups.size() - 1) - не указывает на последний добавленный элемент
         var expectedList = new ArrayList<>(oldGroups);
-        expectedList.add(group.withChangedId(newGroups.get(newGroups.size() - 1).id()).withChangedHeader("").withChangedFooter(""));
         Comparator<GroupData> compareById = (o1, o2) ->
         {return Integer.compare((Integer.parseInt(o1.id())), Integer.parseInt(o2.id()));};
-        newGroups.sort(compareById);
+        newGroups.sort(compareById); // сначала сортируем а потому получаем newGroups.get(newGroups.size() - 1)
+        expectedList.add(group.withChangedId(newGroups.get(newGroups.size() - 1).id()).withChangedHeader("").withChangedFooter("")); // ??
         expectedList.sort(compareById);
         Assertions.assertEquals(expectedList,newGroups);
     }

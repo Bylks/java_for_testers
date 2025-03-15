@@ -1,7 +1,10 @@
 package manager;
+
 import model.ContactData;
 import org.openqa.selenium.By;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ContactHelper extends HelperBase {
@@ -21,8 +24,21 @@ public class ContactHelper extends HelperBase {
     public void deleteAnyContact()
     {
     click(By.name("selected[]"));
-    click(By.xpath("//input[@value=\'Delete\']"));
+    click(By.xpath("//input[@value='Delete']"));
     }
+
+    public void deleteContact(ContactData contact)
+    {
+      openHomePage();
+      selectContactCheckbox(contact);
+      submitDeletionContact();
+    }
+
+    private void selectContactCheckbox(ContactData contact) {
+        By checkbox = By.cssSelector(String.format("input[type=\"checkbox\"][id=\"%s\"]", contact.id())); // input[type="checkbox"][id="50"]
+        click(checkbox);
+    }
+
     public void createContact(ContactData contactData)
     {
         openAddContactPage();
@@ -31,8 +47,24 @@ public class ContactHelper extends HelperBase {
         openContactPage();
     }
 
+    private void openHomePage() {
+        click(By.linkText("home"));
+    }
+
+    private void submitDeletionContact() {
+        click(By.cssSelector("input[type=\"button\"][value=\"Delete\"]"));
+    }
+
     private void submitNewContact() {
         click(By.name("submit"));
+    }
+
+    private void submitUpdateContact() {
+        click(By.name("update"));
+    }
+
+    private void returnToContactsPage() {
+        click(By.linkText("home page"));
     }
 
     private void fillContactValues(ContactData contactData) {
@@ -57,5 +89,35 @@ public class ContactHelper extends HelperBase {
     public int getCount() {
         openContactPage();
         return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
+    public List<ContactData> getList() {
+        openContactPage();
+        var contacts = new ArrayList<ContactData>();
+        var trs = manager.driver.findElements(By.cssSelector("tr[name='entry']"));
+        for (var tr :trs)
+        {
+            var tds = tr.findElements(By.tagName("td"));
+            var checkbox = tr.findElement(By.cssSelector("input[type='checkbox']"));
+            String id = checkbox.getAttribute("id");
+            String lastName = tds.get(1).getText();
+            String firstName = tds.get(2).getText();
+          //  var checkbox = span.findElement(By.name("selected[]"));
+          //  var id = checkbox.getAttribute("value");
+            contacts.add(new ContactData().withChangedId(id).withChangedFirstName(firstName).withChangedLastName(lastName));
+        }
+        return contacts;
+    }
+
+    public void editContact(ContactData contactData, ContactData editedContact) {
+        openContactPage();
+        initContractModification(contactData);
+        fillContactValues(editedContact);
+        submitUpdateContact();
+        returnToContactsPage();
+
+    }
+    private void initContractModification(ContactData contactData) {
+click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
     }
 }
