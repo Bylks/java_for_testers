@@ -77,6 +77,7 @@ public class ContactHelper extends HelperBase {
        if (Objects.nonNull(contactData.birthday())) { fillDate(By.name("bday"),By.name("bmonth"),By.name("byear"),contactData.birthday());}
        if (Objects.nonNull(contactData.anniversary())) { fillDate(By.name("aday"),By.name("amonth"),By.name("ayear"),contactData.anniversary());}
        if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
+       if (!(contactData.photo().isEmpty())){attach(By.name("photo"),contactData.photo());}
     }
 
     private void openAddContactPage() {

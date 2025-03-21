@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.nio.file.Paths;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.Locale;
@@ -14,6 +15,9 @@ public class HelperBase {
 
     public HelperBase(ApplicationManager manager) {
         this.manager = manager;
+    }
+    protected void attach(By locator, String file) {
+        manager.driver.findElement(locator).sendKeys(Paths.get(file).toAbsolutePath().toString());
     }
 
     protected void type(By locator, String text) {
