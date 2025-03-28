@@ -1,5 +1,6 @@
 package tests;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
@@ -10,25 +11,54 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void editContactTest() {
 
-       if (app.contacts().getCount()==0)
+       if (app.hbm().getContactCount()==0)
       {
-          app.contacts().createContact(new ContactData().withChangedFirstName("fname for edit test")
-                  .withChangedLastName("lname for edit test"));
+          app.hbm().createContact(new ContactData()
+                  .withChangedFirstName("fname for edit test")
+                  .withChangedLastName("lname for edit test")
+                  .withChangedAddress("address for edit test"));
       }
-        var oldContacts = app.contacts().getList();
+        var oldContacts = app.hbm().getContactList();
         var rnd = new Random();
         var index = rnd.nextInt(oldContacts.size());
         var editedContact = new ContactData().withChangedFirstName("Edited fname")
-                .withChangedLastName("Edited lname");
+                .withChangedLastName("Edited lname")
+                .withChangedAddress("Edited address");
         app.contacts().editContact(oldContacts.get(index), editedContact);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         var expectedList = new ArrayList<>(oldContacts);
-        expectedList.set(index, editedContact.withChangedId(oldContacts.get(index).id())); //  убираем из проверки все кроме Id и имени т.к. со страницы из getList() можем получить только это
+        expectedList.set(index, editedContact.withChangedId(oldContacts.get(index).id()));
         Comparator<ContactData> compareById = (o1, o2) ->
        {return Integer.compare((Integer.parseInt(o1.id())), Integer.parseInt(o2.id()));};
         newContacts.sort(compareById);
         expectedList.sort(compareById);
         Assertions.assertEquals(newContacts, expectedList);
     }
+
+    @Test
+    public void includeContactInGroupTest() {
+
+        if (app.hbm().getContactCount()==0)
+        {
+            app.hbm().createContact(new ContactData()
+                    .withChangedFirstName("firstnameforinclude")
+                    .withChangedLastName("lastnameforinclude")
+                    .withChangedAddress("addressforinclude")
+            );
+        }
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+            // app.groups().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var contacts = app.hbm().getContactList();
+        var groups = app.hbm().getGroupList();
+        var rnd = new Random();
+        var indexc = rnd.nextInt(contacts.size());
+        var indexg = rnd.nextInt(groups.size());
+        app.contacts().includeContactInGroup(contacts.get(indexc), groups.get(indexg));
+        Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.get(indexc),groups.get(indexg)));
+    }
+
+
 
 }

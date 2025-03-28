@@ -1,6 +1,7 @@
 package manager;
 
 import model.ContactData;
+import model.GroupData;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
@@ -47,6 +48,19 @@ public class ContactHelper extends HelperBase {
         openContactPage();
     }
 
+    public void createContact(ContactData contactData, GroupData group)
+    {
+        openAddContactPage();
+        fillContactValues(contactData);
+        selectGroup(group);
+        submitNewContact();
+        openContactPage();
+    }
+
+    private void selectGroup(GroupData group) {
+        selectOptionByValue(By.name("new_group"), group.id());
+    }
+
     private void openHomePage() {
         click(By.linkText("home"));
     }
@@ -76,7 +90,7 @@ public class ContactHelper extends HelperBase {
        if (!contactData.homePhone().isEmpty()) { type(By.name("home"),contactData.homePhone());}
        if (Objects.nonNull(contactData.birthday())) { fillDate(By.name("bday"),By.name("bmonth"),By.name("byear"),contactData.birthday());}
        if (Objects.nonNull(contactData.anniversary())) { fillDate(By.name("aday"),By.name("amonth"),By.name("ayear"),contactData.anniversary());}
-       if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
+      // if (!(contactData.group().isEmpty())){selectOption(By.name("new_group"),contactData.group());}
        if (!(contactData.photo().isEmpty())){attach(By.name("photo"),contactData.photo());}
     }
 
@@ -120,5 +134,26 @@ public class ContactHelper extends HelperBase {
     }
     private void initContractModification(ContactData contactData) {
 click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
+    }
+
+    public void includeContactInGroup(ContactData contactData, GroupData groupData) {
+        refreshContactPage();
+        selectContactCheckbox(contactData);
+        selectGroupToInclude(groupData);
+        submitIncludeContactInGroup();
+        openContactPage();
+    }
+
+    private void submitIncludeContactInGroup() {
+        click(By.name("add"));
+    }
+
+    private void selectGroupToInclude(GroupData group) {
+        selectOptionByValue(By.name("to_group"), group.id());
+    }
+    public void refreshContactPage()
+    {
+            click(By.linkText("home"));
+
     }
 }

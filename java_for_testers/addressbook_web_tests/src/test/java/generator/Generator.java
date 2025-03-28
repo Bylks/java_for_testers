@@ -76,7 +76,8 @@ public class Generator {
             result.add(new ContactData().withChangedFirstName("firstname"+ CommonFunctions.randomString(i*2))
                     .withChangedLastName("lastname"+ CommonFunctions.randomString(i*2))
                     .withChangedAddress("address"+ CommonFunctions.randomString(i*2))
-                    .withPhoto(CommonFunctions.randomFile("src/test/resources/images"))); //,,randomString(i*10)));
+             //       .withPhoto("src/test/resources/images/1.png"));
+              .withPhoto(CommonFunctions.randomFile("src/test/resources/images"))); //,,randomString(i*10)));
         }
         return result;
     }

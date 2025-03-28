@@ -12,15 +12,15 @@ public class ContactDeletionTests extends TestBase {
     @Test
     public void canDeleteAnyContract(){
         app.contacts().openContactPage();
-        if (!(app.contacts().isContactPresent()))
+        if ((app.hbm().getContactCount()==0))
         {
-            app.contacts().createContact(new ContactData());
+            app.hbm().createContact(new ContactData());
         }
-        var contactsListBefore = app.contacts().getList();
+        var contactsListBefore = app.hbm().getContactList();
         var rnd = new Random();
         var index = rnd.nextInt(contactsListBefore.size());
         app.contacts().deleteContact(contactsListBefore.get(index));
-        var contactsListAfter = app.contacts().getList();
+        var contactsListAfter = app.hbm().getContactList();
         //    int contactsCountAfter = app.contacts().getCount();
         var expectedList = new ArrayList<>(contactsListBefore);
         Comparator<ContactData> compareById = (o1, o2) ->

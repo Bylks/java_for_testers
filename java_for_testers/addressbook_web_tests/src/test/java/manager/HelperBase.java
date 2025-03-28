@@ -44,6 +44,12 @@ public class HelperBase {
       // dropdown.findElement(By.xpath("//option[. = '"+option+"']")).click(); почемуто не работает
     }
 
+    protected void selectOptionByValue(By select, String value) {
+        click(select);
+        WebElement dropdown = manager.driver.findElement(select);
+        new Select(dropdown).selectByValue(value);
+    }
+
     protected void goHomePage() {
         click(By.linkText("home page"));
     }

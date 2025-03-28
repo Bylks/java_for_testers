@@ -13,7 +13,9 @@ public class ApplicationManager {
     private LoginHelper session;
     private GroupHelper groups;
     private ContactHelper contacts;
+    private HibernateHelper hbm;
     private Properties properties;
+    private JdbcHelper jdbc;
     public void init(String browser, Properties properties) {
         this.properties = properties;
         if (driver == null) {
@@ -33,6 +35,23 @@ public class ApplicationManager {
             session().login(properties.getProperty("web.username"), properties.getProperty("web.password"));
         }
     }
+
+    public JdbcHelper jdbc()
+    {
+        if (jdbc == null){
+            jdbc = new JdbcHelper(this);
+        }
+        return jdbc;
+    }
+
+    public HibernateHelper hbm()
+    {
+        if (hbm == null){
+            hbm = new HibernateHelper(this);
+        }
+        return hbm;
+    }
+
     public GroupHelper groups()
     {
         if (groups == null){
