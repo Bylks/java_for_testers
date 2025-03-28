@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public record ContactData (String id, String lastName, String firstName, String address, String email1, String homePhone, LocalDate birthday, LocalDate anniversary,
                            String photo) {
    public ContactData(){
-        this("", "","","","","",null,null, "");
+        this ("", "","","","","",null,null, "");
     }
 //    public ContactData withChangedGroup(String group)
 //    {
