@@ -59,6 +59,34 @@ public class ContactModificationTests extends TestBase {
         Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.get(indexc),groups.get(indexg)));
     }
 
+    @Test
+    public void excludeContactInGroupTest() {
+
+        if (app.hbm().getContactCount()==0)
+        {
+            app.hbm().createContact(new ContactData()
+                    .withChangedFirstName("firstnameforinclude")
+                    .withChangedLastName("lastnameforinclude")
+                    .withChangedAddress("addressforinclude")
+            );
+        }
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+            // app.groups().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var contacts = app.hbm().getContactList();
+        var groups = app.hbm().getGroupList();
+        var rnd = new Random();
+        var indexc = rnd.nextInt(contacts.size());
+        var indexg = rnd.nextInt(groups.size());
+        app.jdbc().includeContactInGroup(contacts.get(indexc), groups.get(indexg));
+      //  Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.get(indexc),groups.get(indexg)));
+        app.contacts().excludeContactInGroup(contacts.get(indexc), groups.get(indexg));
+//        var contactsAfter = app.hbm().getContactList();
+//        var groupsAfter = app.hbm().getGroupList();
+        Assertions.assertFalse(app.jdbc().isContactIncludedInGroup(contacts.get(indexc),groups.get(indexg)));
+    }
+
 
 
 }

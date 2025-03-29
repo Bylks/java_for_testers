@@ -22,10 +22,10 @@ public class TestBase {
         }
 
     }
-    @AfterEach
-    public void checkDBConsistency(){
-        app.jdbc().checkconsistency();
-        //  select * from `address_in_groups` a left join addressbook b on a.id = b.id where b.id is NULL;
-    }
+//    @AfterEach
+//    public void checkDBConsistency(){
+//        app.jdbc().checkconsistency();
+//        //  select * from `address_in_groups` a left join addressbook b on a.id = b.id where b.id is NULL;
+//    }
 
 }

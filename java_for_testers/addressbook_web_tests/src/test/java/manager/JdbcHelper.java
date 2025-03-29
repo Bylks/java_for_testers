@@ -5,7 +5,9 @@ import model.GroupData;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class JdbcHelper extends HelperBase {
@@ -61,4 +63,24 @@ public boolean isContactIncludedInGroup(ContactData contactData, GroupData group
         throw new RuntimeException(e);
     }
 }
+
+    public void includeContactInGroup(ContactData contactData, GroupData groupData) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String createdDate = dateFormat.format(new Date());
+        String modifiedDate = dateFormat.format(new Date());
+
+        try (var conn = DriverManager.getConnection("jdbc:mysql://localhost/addressbook", "root", "");
+             var statement = conn.createStatement()) {
+
+            // Формируем SQL-запрос
+            String query = String.format("INSERT INTO `address_in_groups` (`domain_id`, `id`, `group_id`, `created`, `modified`, `deprecated`) VALUES (0, %s, %s, '%s', '%s', '0000-00-00 00:00:00');",
+                    contactData.id(), groupData.id(), createdDate, modifiedDate);
+
+            // Выполняем запрос
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

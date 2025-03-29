@@ -139,7 +139,7 @@ click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
     public void includeContactInGroup(ContactData contactData, GroupData groupData) {
         refreshContactPage();
         selectContactCheckbox(contactData);
-        selectGroupToInclude(groupData);
+        selectGroupSelector(groupData);
         submitIncludeContactInGroup();
         openContactPage();
     }
@@ -148,12 +148,28 @@ click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
         click(By.name("add"));
     }
 
-    private void selectGroupToInclude(GroupData group) {
+    private void selectGroupSelector(GroupData group) {
         selectOptionByValue(By.name("to_group"), group.id());
     }
     public void refreshContactPage()
     {
             click(By.linkText("home"));
 
+    }
+
+    public void excludeContactInGroup(ContactData contactData, GroupData groupData) {
+        refreshContactPage();
+        selectGroupToExclude(groupData);
+        selectContactCheckbox(contactData);
+        submitExcludeContactInGroup();
+        openContactPage();
+    }
+
+    private void submitExcludeContactInGroup() {
+        click(By.name("remove"));
+    }
+
+    private void selectGroupToExclude(GroupData group) {
+        selectOptionByValue(By.name("group"), group.id());
     }
 }
