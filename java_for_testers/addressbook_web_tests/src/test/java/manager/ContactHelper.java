@@ -124,8 +124,9 @@ public class ContactHelper extends HelperBase {
         return contacts;
     }
 
+
     public void editContact(ContactData contactData, ContactData editedContact) {
-        openContactPage();
+        refreshContactPage();
         initContractModification(contactData);
         fillContactValues(editedContact);
         submitUpdateContact();
@@ -154,6 +155,7 @@ click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
     public void refreshContactPage()
     {
             click(By.linkText("home"));
+        selectOption(By.name("group"),"[all]" );
 
     }
 
