@@ -68,7 +68,7 @@ public class ContactCreationTests extends TestBase {
         app.contacts().createContact(new ContactData("", "Last Name Test","First Name Test",
                 "Address Test","Email1 Test","Home Phone Test",
                 LocalDate.parse("1234-12-23", DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                LocalDate.parse("2005-01-05", DateTimeFormatter.ofPattern("yyyy-MM-dd")), ""));
+                LocalDate.parse("2005-01-05", DateTimeFormatter.ofPattern("yyyy-MM-dd")), "", "", "", "", "", ""));
     }
 
     @ParameterizedTest

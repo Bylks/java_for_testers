@@ -174,4 +174,21 @@ click(By.cssSelector("a[href='edit.php?id=" + contactData.id()+ "']"));
     private void selectGroupToExclude(GroupData group) {
         selectOptionByValue(By.name("group"), group.id());
     }
+
+    public Object getPhones(ContactData contact) {
+        refreshContactPage();
+       return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[6]", contact.id()))).getText();
+
+    }
+    public Object getAddress(ContactData contact) {
+        refreshContactPage();
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[4]", contact.id()))).getText();
+    }
+    public Object getEmails(ContactData contact) {
+        refreshContactPage();
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[5]", contact.id()))).getText();
+    }
 }

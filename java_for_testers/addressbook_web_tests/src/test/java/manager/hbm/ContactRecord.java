@@ -24,6 +24,7 @@ public class ContactRecord {
     public String email2 = "";
     public String email3 = "";
     public String homepage = "";
+    public String phone2 = "";
     public ContactRecord(){}
 
     public ContactRecord(long id, String firstname, String lastname, String address) {
@@ -31,6 +32,7 @@ public class ContactRecord {
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
+
     }
 
 }

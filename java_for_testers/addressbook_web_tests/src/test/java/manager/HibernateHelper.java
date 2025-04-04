@@ -59,7 +59,15 @@ public class HibernateHelper extends HelperBase {
                 .withChangedId("" + record.id)
                 .withChangedFirstName(record.firstname)
                 .withChangedLastName(record.lastname)
-                .withChangedAddress(record.address);
+                .withChangedAddress(record.address)
+                .withChangedMobilePhone(record.mobile)
+                .withChangedHomePhone(record.home)
+                .withChangedPhone2Phone(record.phone2)
+                .withChangedWorkPhone(record.work)
+                .withChangedAddress(record.address)
+                .withChangedEmail1(record.email)
+                .withChangedEmail2(record.email2)
+                .withChangedEmail3(record.email3);
     }
 
     private static ContactRecord convert(ContactData record) {
@@ -126,6 +134,17 @@ public class HibernateHelper extends HelperBase {
     }
 
 
+    private void CreateContactWithPhone() {
+        createContact(new ContactData()
+                .withChangedFirstName("firstnameprovideContactWithPhone")
+                .withChangedLastName("lastnameprovideContactWithPhone")
+                .withChangedAddress("addressprovideContactWithPhone")
+                .withChangedPhone2Phone("11111")
+                .withChangedHomePhone("22222")
+                .withChangedWorkPhone("33333")
+                .withChangedMobilePhone("44444"));
+    }
+
     public ContactData provideContactWithoutGroup() {
         var contacts = getContactList();
         for (var contact : contacts)
@@ -135,9 +154,9 @@ public class HibernateHelper extends HelperBase {
                }
         }
         createContact(new ContactData()
-                .withChangedFirstName("firstnameforinclude")
-                .withChangedLastName("lastnameforinclude")
-                .withChangedAddress("addressforinclude"));
+                .withChangedFirstName("firstnameprovideContactWithoutGroup")
+                .withChangedLastName("lastnameprovideContactWithoutGroup")
+                .withChangedAddress("addressprovideContactWithoutGroup"));
         return getContactList().getLast();
 
     }
@@ -158,5 +177,66 @@ public class HibernateHelper extends HelperBase {
             createGroup(new GroupData("", "group name", "group header", "group footer"));
         }
         return getGroupList().getLast();
+    }
+
+    public ContactData provideContactWithPhone() {
+        var contacts = getContactList();
+        for (var contact : contacts) // Ищем существующий
+        {
+            if (!contact.homePhone().isEmpty()||
+                    !contact.workPhone().isEmpty()||
+                    !contact.phone2Phone().isEmpty()||
+                    !contact.mobilePhone().isEmpty()
+            ) {return contact;}
+        }
+        //Если все без телефонов создаём
+        CreateContactWithPhone();
+        contacts = getContactList();
+        return contacts.getLast();
+    }
+
+    public ContactData provideContactWithAddress() {
+        var contacts = getContactList();
+        for (var contact : contacts) // Ищем существующий
+        {
+            if (!contact.address().isEmpty())
+            {return contact;}
+        }
+        //Если все без address создаём
+        CreateContactWithAddress();
+        contacts = getContactList();
+        return contacts.getLast();
+
+
+    }
+
+    public ContactData provideContactWithEmails() {
+        var contacts = getContactList();
+        for (var contact : contacts) // Ищем существующий
+        {
+            if (!contact.email1().isEmpty()||
+                    !contact.email2().isEmpty()||
+                    !contact.email3().isEmpty())
+            {return contact;}
+        }
+        //Если все без email создаём
+        CreateContactWithEmails();
+        contacts = getContactList();
+        return contacts.getLast();
+
+
+    }
+
+    private void CreateContactWithAddress() {
+        createContact(new ContactData()
+                .withChangedFirstName("firstnameprovideContactWithPhone")
+                .withChangedLastName("lastnameprovideContactWithPhone")
+                .withChangedAddress("CreateContactWithAddress"));
+    }
+    private void CreateContactWithEmails() {
+        createContact(new ContactData()
+                .withChangedFirstName("firstnameprovideContactWithPhone")
+                .withChangedLastName("lastnameprovideContactWithPhone")
+                .withChangedAddress("CreateContactWithAddress"));
     }
 }
