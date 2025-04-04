@@ -126,4 +126,37 @@ public class HibernateHelper extends HelperBase {
     }
 
 
+    public ContactData provideContactWithoutGroup() {
+        var contacts = getContactList();
+        for (var contact : contacts)
+        {
+               if (!isContactInAnyGroup(contact)) {
+                   return contact;
+               }
+        }
+        createContact(new ContactData()
+                .withChangedFirstName("firstnameforinclude")
+                .withChangedLastName("lastnameforinclude")
+                .withChangedAddress("addressforinclude"));
+        return getContactList().getLast();
+
+    }
+
+    private boolean isContactInAnyGroup(ContactData contact) {
+
+        return sessionFactory.fromSession(session -> {
+            String hql = "SELECT COUNT(g) > 0 FROM GroupRecord g JOIN g.contacts c WHERE c.id = :contactId";
+            return session.createQuery(hql, Boolean.class)
+                    .setParameter("contactId", contact.id())
+                    .uniqueResult();
+        });
+
+    }
+
+    public GroupData provideGroup() {
+        if (getGroupCount() == 0) {
+            createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        return getGroupList().getLast();
+    }
 }

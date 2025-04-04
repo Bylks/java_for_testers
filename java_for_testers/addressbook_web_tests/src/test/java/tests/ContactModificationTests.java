@@ -37,57 +37,63 @@ public class ContactModificationTests extends TestBase {
 
     @Test
     public void includeContactInGroupTest() {
-        int indexc = 0;
-        int indexg = 0;
-        boolean somethingWasCreated = false;
-        boolean found = false;
-        var rnd = new Random();
-        if (app.hbm().getContactCount()==0)
-        {
-            app.hbm().createContact(new ContactData()
-                    .withChangedFirstName("firstnameforinclude")
-                    .withChangedLastName("lastnameforinclude")
-                    .withChangedAddress("addressforinclude")
-            );
-            somethingWasCreated = true;
-        }
-        if (app.hbm().getGroupCount() == 0) {
-            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
-            somethingWasCreated = true;
-        }
-
-        var contacts = app.hbm().getContactList();
-        var groups = app.hbm().getGroupList();
-        if (somethingWasCreated) // Если чтото создавали то связки не должно быть, берем случайные
-        {
-           indexc = rnd.nextInt(contacts.size());
-           indexg = rnd.nextInt(groups.size());
-            app.contacts().includeContactInGroup(contacts.get(indexc), groups.get(indexg));
-        } else { // Если ничего не создавали ищем отсутствующую связку если находим, добавляем
-            for (var contact : contacts)
-            {
-                for (var group : groups)
-                {
-                    if (!app.jdbc().isContactIncludedInGroup(contact, group))
-                    {
-                        app.contacts().includeContactInGroup(contact, group);
-                        Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contact, group));
-                        found=true;
-                        break;
-                    }
-                }
-                if (found) {break;}
-            }
-            // Если все контакты уже в группах создаём контакт и добавляем в сущ группу
-            app.hbm().createContact(new ContactData()
-                    .withChangedFirstName("firstnameforincludeQQQww")
-                    .withChangedLastName("lastnameforincludeQQQww")
-                    .withChangedAddress("addressforincludeQQQww"));
-            indexg = rnd.nextInt(groups.size());
-            contacts = app.hbm().getContactList();
-            app.contacts().includeContactInGroup(contacts.getLast(), groups.get(indexg));
-            Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.getLast(), groups.get(indexg)));
-        }
+        ContactData contact = app.hbm().provideContactWithoutGroup ();
+        GroupData group = app.hbm().provideGroup();
+        app.contacts().includeContactInGroup(contact, group);
+        Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contact, group));
+        // 111
+//        int indexc = 0;
+//        int indexg = 0;
+//        boolean somethingWasCreated = false;
+//        boolean found = false;
+//        var rnd = new Random();
+//        if (app.hbm().getContactCount()==0)
+//        {
+//            app.hbm().createContact(new ContactData()
+//                    .withChangedFirstName("firstnameforinclude")
+//                    .withChangedLastName("lastnameforinclude")
+//                    .withChangedAddress("addressforinclude")
+//            );
+//            somethingWasCreated = true;
+//        }
+//        if (app.hbm().getGroupCount() == 0) {
+//            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+//            somethingWasCreated = true;
+//        }
+//
+//        var contacts = app.hbm().getContactList();
+//        var groups = app.hbm().getGroupList();
+//        if (somethingWasCreated) // Если чтото создавали то связки не должно быть, берем случайные
+//        {
+//           indexc = rnd.nextInt(contacts.size());
+//           indexg = rnd.nextInt(groups.size());
+//            app.contacts().includeContactInGroup(contacts.get(indexc), groups.get(indexg));
+//            Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.get(indexc), groups.get(indexg)));
+//        } else { // Если ничего не создавали ищем отсутствующую связку если находим, добавляем
+//            for (var contact : contacts)
+//            {
+//                for (var group : groups)
+//                {
+//                    if (!app.jdbc().isContactIncludedInGroup(contact, group))
+//                    {
+//                        app.contacts().includeContactInGroup(contact, group);
+//                        Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contact, group));
+//                        found=true;
+//                        break;
+//                    }
+//                }
+//                if (found) {break;}
+//            }
+//            // Если все контакты уже в группах создаём контакт и добавляем в сущ группу
+//            app.hbm().createContact(new ContactData()
+//                    .withChangedFirstName("firstnameforincludeQQQww")
+//                    .withChangedLastName("lastnameforincludeQQQww")
+//                    .withChangedAddress("addressforincludeQQQww"));
+//            indexg = rnd.nextInt(groups.size());
+//            contacts = app.hbm().getContactList();
+//            app.contacts().includeContactInGroup(contacts.getLast(), groups.get(indexg));
+//            Assertions.assertTrue(app.jdbc().isContactIncludedInGroup(contacts.getLast(), groups.get(indexg)));
+//        }
 
     }
 
