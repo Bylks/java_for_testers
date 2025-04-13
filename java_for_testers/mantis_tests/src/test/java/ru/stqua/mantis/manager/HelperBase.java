@@ -1,5 +1,6 @@
 package ru.stqua.mantis.manager;
 
+import okhttp3.OkHttpClient;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -12,7 +13,6 @@ import java.util.Locale;
 
 public class HelperBase {
     protected final ApplicationManager manager;
-
     public HelperBase(ApplicationManager manager) {
         this.manager = manager;
     }

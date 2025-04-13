@@ -12,9 +12,16 @@ public class ApplicationManager {
     private Properties properties;
     private String browser;
     public SessionHelper sessionHelper;
+    public HttpSessionHelper httpSessionHelper;
+    public JamesCliHelper jamesCliHelper;
+    public MailHelper mailHelper;
+    public MantisHelper mantisHelper;
     public void init(String browser, Properties properties) {
         this.properties = properties;
         this.browser = browser;
+    }
+    public String property(String name){
+        return properties.getProperty(name);
     }
     public WebDriver driver(){
         if (driver == null)
@@ -43,6 +50,42 @@ public class ApplicationManager {
         }
         return sessionHelper;
     }
+
+    public HttpSessionHelper http()
+    {
+        if (httpSessionHelper == null)
+        {
+            httpSessionHelper = new HttpSessionHelper(this);
+        }
+        return httpSessionHelper;
+    }
+
+    public JamesCliHelper jamesCli()
+    {
+        if (jamesCliHelper == null)
+        {
+            jamesCliHelper = new JamesCliHelper(this);
+        }
+        return jamesCliHelper;
+    }
+    public MailHelper mail()
+    {
+        if (mailHelper == null)
+        {
+            mailHelper = new MailHelper(this);
+        }
+        return mailHelper;
+    }
+
+    public MantisHelper mantis()
+    {
+        if (mantisHelper == null)
+        {
+            mantisHelper = new MantisHelper(this);
+        }
+        return mantisHelper;
+    }
+
 
 
 }
