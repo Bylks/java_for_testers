@@ -1,6 +1,7 @@
 package ru.stqua.mantis.manager;
 
 import org.openqa.selenium.By;
+import ru.stqua.mantis.model.UserData;
 
 public class MantisHelper extends HelperBase{
     public MantisHelper(ApplicationManager manager) {
@@ -30,10 +31,10 @@ public class MantisHelper extends HelperBase{
         manager.driver().get(url);
     }
 
-    public void activateAccount(String url)
+    public void activateAccount(String url, UserData user)
     {
         getUsingUrl(url);
-        fillActivationForm();
+        fillActivationForm(user);
         updateUser();
     }
 
@@ -42,10 +43,10 @@ public class MantisHelper extends HelperBase{
         click(By.cssSelector("button[type='submit']"));
     }
 
-    private void fillActivationForm()
+    private void fillActivationForm(UserData user)
     {
-        type(By.name("realname"),"Name");
-        type(By.name("password"),"password");
-        type(By.name("password_confirm"),"password");
+        type(By.name("realname"),user.realname());
+        type(By.name("password"),user.password());
+        type(By.name("password_confirm"),user.password());
     }
 }
