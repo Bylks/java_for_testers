@@ -1,5 +1,6 @@
 package manager;
 
+import io.qameta.allure.Step;
 import model.GroupData;
 import org.openqa.selenium.By;
 
@@ -10,6 +11,7 @@ public class GroupHelper extends HelperBase {
     public GroupHelper(ApplicationManager manager){
         super(manager);
     }
+    @Step
     public void createGroup(GroupData group) {
         openGroupsPage();
         initGroupCreation();
@@ -17,7 +19,7 @@ public class GroupHelper extends HelperBase {
         submitGroupCreation();
         returnToGroupsPage();
     }
-
+    @Step
     public void removeGroup(GroupData group) {
         openGroupsPage();
         selectGroup(group);

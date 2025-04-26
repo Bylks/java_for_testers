@@ -1,5 +1,6 @@
 package manager;
 
+import io.qameta.allure.Step;
 import model.ContactData;
 import model.GroupData;
 import org.openqa.selenium.By;
@@ -39,7 +40,7 @@ public class ContactHelper extends HelperBase {
         By checkbox = By.cssSelector(String.format("input[type=\"checkbox\"][id=\"%s\"]", contact.id())); // input[type="checkbox"][id="50"]
         click(checkbox);
     }
-
+@Step
     public void createContact(ContactData contactData)
     {
         openAddContactPage();
