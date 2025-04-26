@@ -4,8 +4,13 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 public class ApplicationManager {
@@ -16,23 +21,27 @@ public class ApplicationManager {
     private HibernateHelper hbm;
     private Properties properties;
     private JdbcHelper jdbc;
-    public void init(String browser, Properties properties) {
+    public void init(String browser, Properties properties) throws MalformedURLException {
         this.properties = properties;
         if (driver == null) {
-            switch (browser)
-            {
-                case "firefox":
-                    driver = new FirefoxDriver();
-                    break;
-                case "chrome":
-                    driver = new ChromeDriver();
-                    break;
-                default: throw new IllegalArgumentException(String.format("Browser %s is not supported", browser));
-            }
-            Runtime.getRuntime().addShutdownHook((new Thread(driver::quit)));
-            driver.get(properties.getProperty("web.baseUrl"));
-            driver.manage().window().setSize(new Dimension(2560, 1400));
-            session().login(properties.getProperty("web.username"), properties.getProperty("web.password"));
+            var seleniumServer = properties.getProperty("seleniumServer");
+                switch (browser) {
+                    case "firefox":
+                        if (seleniumServer != null) {driver = new RemoteWebDriver(new URL(seleniumServer), new FirefoxOptions());}
+                        else {driver = new FirefoxDriver();}
+                        break;
+                    case "chrome":
+                        if (seleniumServer != null) {driver = new RemoteWebDriver(new URL(seleniumServer), new ChromeOptions());}
+                        else {driver = new ChromeDriver();}
+                        break;
+                    default:
+                        throw new IllegalArgumentException(String.format("Browser %s is not supported", browser));
+                }
+                Runtime.getRuntime().addShutdownHook((new Thread(driver::quit)));
+                driver.get(properties.getProperty("web.baseUrl"));
+                driver.manage().window().setSize(new Dimension(2560, 1400));
+                session().login(properties.getProperty("web.username"), properties.getProperty("web.password"));
+
         }
     }
 
